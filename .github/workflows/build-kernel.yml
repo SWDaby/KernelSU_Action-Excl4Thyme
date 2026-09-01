@@ -155,6 +155,11 @@ jobs:
         key: build-kernel-${{ env.DEVICE }}${{ env.UPLOADNAME }}
         max-size: 2G
     
+    - name: Patch binderfs build error
+      run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
+        sed -i '1s/^/#ifndef BINDERFS_MAX_NAME\n#define BINDERFS_MAX_NAME 256\n#endif\n/' drivers/android/binder_internal.h
+
     - name: Build kernel
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
