@@ -128,7 +128,7 @@ jobs:
     - name: Merge defconfig (crDroid fragmented -> single)
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
-        cat arch/arm64/configs/vendor/kona_defconfig arch/arm64/configs/vendor/xiaomi/sm8250-common.config arch/arm64/configs/vendor/thyme.config > arch/arm64/configs/vendor/thyme_defconfig
+        cat arch/arm64/configs/vendor/kona_defconfig arch/arm64/configs/vendor/xiaomi/sm8250-common.config arch/arm64/configs/vendor/xiaomi/thyme.config > arch/arm64/configs/vendor/thyme_defconfig
 
     - name: Setup Configuration for Kernel
       run: |
