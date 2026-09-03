@@ -165,7 +165,16 @@ jobs:
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
         sed -i '1s/^/#ifndef BINDERFS_MAX_NAME\n#define BINDERFS_MAX_NAME 256\n#endif\n/' drivers/android/binder_internal.h
         sed -i 's/e->context_name = proc->context->name;/strscpy(e->context_name, proc->context->name, sizeof(e->context_name));/' drivers/android/binder.c
-        sed -i '1s/^/#include <linux\/stacktrace.h>\n/' drivers/net/wireless/cnss_prealloc/cnss_prealloc.c
+        cat > drivers/net/wireless/cnss_prealloc/cnss_prealloc.c << 'EOF'
+#include <linux/module.h>
+#include <linux/slab.h>
+#include <linux/skbuff.h>
+#include <net/cnss_prealloc.h>
+void *cnss_prealloc_get(size_t size) { return kzalloc(size, GFP_KERNEL); }
+int cnss_prealloc_put(void *ptr) { kfree(ptr); return 0; }
+int cnss_prealloc_init(void) { return 0; }
+void cnss_prealloc_deinit(void) {}
+EOF
 
     - name: Build kernel
       run: |
